@@ -2,7 +2,7 @@
 Print the integers from 1 to 100 inclusive. For multiples of three, print Fizz instead of the number. For multiples of five, print Buzz instead of the number. For multiples of both three and five, print FizzBuzz instead of the number.
 
 ### python
-``` python
+```python
 for i in range(1, 101):
 	if i % 15 == 0:
 		print("FizzBuzz")
@@ -15,7 +15,7 @@ for i in range(1, 101):
 ```
 
 ### bash
-``` bash
+```bash
 for i in {1..100}; do
 	((( i % 15 == 0 )) && echo 'FizzBuzz') ||
 	((( i % 5 == 0 )) && echo 'Buzz') ||
@@ -24,14 +24,13 @@ for i in {1..100}; do
 done
 ```
 
-### SQL
-``` sql
+### PostgreSQL
+```sql
 SELECT CASE
-	WHEN MOD(level,15)=0 THEN 'FizzBuzz'
-	WHEN MOD(level,3)=0 THEN 'Fizz'
-	WHEN MOD(level,5)=0 THEN 'Buzz'
-	ELSE TO_CHAR(level)
-	END FizzBuzz
-FROM dual
-CONNECT BY LEVEL <= 100;
+	WHEN i % 15 = 0 THEN 'FizzBuzz'
+	WHEN i % 5 = 0 THEN 'Buzz'
+	WHEN i % 3 = 0 THEN 'Fizz'
+	ELSE CAST(i AS VARCHAR)
+	END AS A
+FROM GENERATE_SERIES(1,100) AS i;
 ```
