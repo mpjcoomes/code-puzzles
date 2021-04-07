@@ -4,23 +4,23 @@ Print the integers from 1 to 100 inclusive. For multiples of three, print Fizz i
 ### python
 ```python
 for i in range(1, 101):
-	if i % 15 == 0:
-		print("FizzBuzz")
-	elif i % 3 == 0:
-		print("Fizz")
-	elif i % 5 == 0:
-		print("Buzz")
-	else:
-		print(i)
+    if i % 15 == 0:
+        print("FizzBuzz")
+    elif i % 3 == 0:
+        print("Fizz")
+    elif i % 5 == 0:
+        print("Buzz")
+    else:
+        print(i)
 ```
 
 ### bash
 ```bash
 for i in {1..100}; do
-	((( i % 15 == 0 )) && echo 'FizzBuzz') ||
-	((( i % 5 == 0 )) && echo 'Buzz') ||
-	((( i % 3 == 0 )) && echo 'Fizz') ||
-	echo $n;
+	( (( i % 15 == 0 )) && echo 'FizzBuzz' ) ||
+	( (( i % 5 == 0 )) && echo 'Buzz' ) ||
+	( (( i % 3 == 0 )) && echo 'Fizz' ) ||
+	echo $i;
 done
 ```
 
