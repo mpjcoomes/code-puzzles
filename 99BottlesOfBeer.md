@@ -41,5 +41,17 @@ done
 
 ### PostgreSQL
 ```sql
-
+SELECT CASE
+	WHEN j = 0 AND i = 1 THEN i || ' ' || 'bottle of beer on the wall'
+	WHEN j = 0 THEN i || ' ' || 'bottles of beer on the wall'
+	WHEN j = 1 AND i = 1 THEN i || ' ' || 'bottle of beer'
+	WHEN j = 1 THEN i || ' ' || 'bottles of beer'
+	WHEN j = 3 AND i = 2 THEN  i - 1  || ' ' || 'bottle of beer on the wall'
+	WHEN j = 3 THEN i - 1  || ' ' || 'bottles of beer on the wall'
+	WHEN j = 2 THEN 'Take one down, pass it around'
+	ELSE ''
+	END AS A
+FROM GENERATE_SERIES(1,99) AS i,
+	GENERATE_SERIES(0,4) AS j
+ORDER BY i DESC, j;
 ```
