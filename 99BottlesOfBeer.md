@@ -17,7 +17,26 @@ Take one down, pass it around
 
 ### python
 ```python
+a = "bottles of beer"
+b = "on the wall"
+c = "Take one down, pass it around"
 
+for i in reversed(range(1, 100)):
+    if i > 2:
+        print(i, a, b)
+        print(i, a)
+        print(c)
+        print(i - 1, a, b, "\n")
+    elif i == 2:
+        print(i, a, b)
+        print(i, a)
+        print(c)
+        print(i - 1, a.replace("s", ""), b, "\n")
+    else:
+        print(i, a.replace("s", ""), b)
+        print(i, a.replace("s", ""))
+        print(c)
+        print(i - 1, a, b, "\n")
 ```
 
 ### bash
