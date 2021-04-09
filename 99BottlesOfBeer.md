@@ -41,17 +41,21 @@ done
 
 ### PostgreSQL
 ```sql
-SELECT CASE
-	WHEN j = 0 AND i = 1 THEN i || ' ' || 'bottle of beer on the wall'
-	WHEN j = 0 THEN i || ' ' || 'bottles of beer on the wall'
-	WHEN j = 1 AND i = 1 THEN i || ' ' || 'bottle of beer'
-	WHEN j = 1 THEN i || ' ' || 'bottles of beer'
-	WHEN j = 3 AND i = 2 THEN  i - 1  || ' ' || 'bottle of beer on the wall'
-	WHEN j = 3 THEN i - 1  || ' ' || 'bottles of beer on the wall'
+WITH bottles AS (
+SELECT i, j, CASE
+	WHEN j = 0 THEN i || ' bottles of beer on the wall'
+	WHEN j = 1 THEN i || ' bottles of beer'
 	WHEN j = 2 THEN 'Take one down, pass it around'
+	WHEN j = 3 THEN i - 1 || ' bottles of beer on the wall'
 	ELSE ''
 	END AS A
 FROM GENERATE_SERIES(1,99) AS i,
 	GENERATE_SERIES(0,4) AS j
+)
+SELECT CASE
+	WHEN CAST(substring(A, '^1\s') AS INTEGER) = 1 THEN translate(A, 's', '')
+	ELSE A
+	END
+FROM bottles
 ORDER BY i DESC, j;
 ```
