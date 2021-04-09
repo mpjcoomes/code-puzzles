@@ -21,7 +21,7 @@ a = "bottles of beer"
 b = "on the wall"
 c = "Take one down, pass it around"
 
-for i in reversed(range(1, 100)):
+for i in range(99, 0, -1):
     if i > 2:
         print(i, a, b)
         print(i, a)
