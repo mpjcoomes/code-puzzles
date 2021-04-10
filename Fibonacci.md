@@ -3,7 +3,7 @@ Fibonacci numbers form an *F<sub>n</sub>* sequence where each number is the sum 
 
 > *F*<sub>0</sub> = 0
 >
-> *F*<sub>0</sub> = 1
+> *F*<sub>1</sub> = 1
 > 
 > Where *n*>1, *F<sub>n</sub>* = *F<sub>n</sub>*-1 + *F<sub>n</sub>*-2
 > 
