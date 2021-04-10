@@ -1,19 +1,17 @@
 # 99 Bottles of Beer
-
 Print lyrics for "99 Bottles of Beer on the Wall" from 99 to 0, grammatically correct.
-```
-99 bottles of beer on the wall
-99 bottles of beer
-Take one down, pass it around
-98 bottles of beer on the wall
 
-...
+	99 bottles of beer on the wall
+	99 bottles of beer
+	Take one down, pass it around
+	98 bottles of beer on the wall
 
-1 bottle of beer on the wall
-1 bottle of beer
-Take one down, pass it around
-0 bottles of beer on the wall
-```
+	...
+
+	1 bottle of beer on the wall
+	1 bottle of beer
+	Take one down, pass it around
+	0 bottles of beer on the wall
 
 ### python
 ```python
