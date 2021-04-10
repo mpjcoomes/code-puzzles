@@ -1,27 +1,24 @@
 # FizzBuzz
 Print the integers from 1 to 100 inclusive. Instead of the number, print Fizz for multiples of three, Buzz for multiples of five, and FizzBuzz for multiples of both three and five.
 
-```
-1
-2
-Fizz
-4
-Buzz
+	1
+	2
+	Fizz
+	4
+	Buzz
 
-...
+	...
 
-13
-14
-FizzBuzz
+	13
+	14
+	FizzBuzz
 
-...
+	...
 
-97
-98
-Fizz
-Buzz
-```
-
+	97
+	98
+	Fizz
+	Buzz
 
 ### python
 ```python
