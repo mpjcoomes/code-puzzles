@@ -34,12 +34,12 @@ fib() {
 fib() {
   export BC_LINE_LENGTH=0
   fib=(0 1)
-  abs=$(( $1 > 0 ? $1 : $1 * -1 ))
-  for i in $(seq -s' ' 0 "$abs"); do
+  j=$(( $1 > 0 ? $1 : $1 * -1 ))
+  for i in $(seq -s' ' 0 "$j"); do
     n=${#fib[@]}
     fib+=( "$(bc<<<"${fib[$((n-2))]} + ${fib[$((n-1))]}")" )
   done
-  bc<<<"if ( $1 > 0 ) ${fib["$abs"]} else -${fib["$abs"]}"
+  bc<<<"if ( $1 > 0 ) ${fib["$j"]} else -${fib["$j"]}"
 }
 
 # recursive
