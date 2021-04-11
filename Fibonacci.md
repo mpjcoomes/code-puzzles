@@ -20,15 +20,26 @@ Write a program to generate the *n*<sup>th</sup> Fibonacci number.
 
 ### bash
 ```bash
+# 0 <= n < 93
 fib() {
-export BC_LINE_LENGTH=0
-fib=(0 1)
-max=$(( $1 > 0 ? $1 : $1 * -1 ))
-for i in $(seq -s' ' 0 "$max"); do
-  a=${#fib[@]}
-  fib+=( "$(bc<<<"${fib[$((a-2))]} + ${fib[$((a-1))]}")" )
-done
-bc<<<"if ( $1 > 0 ) ${fib["$max"]} else -${fib["$max"]}"
+  fib=(0 1)
+  for i in $(seq -s' ' 0 "$1"); do
+    a=${#fib[@]}
+    fib+=( "$(( ${fib[$((a-2))]} + ${fib[$((a-1))]} ))" )
+  done
+  echo "${fib["$1"]}"
+}
+
+# support negafibonacci and large numbers, tested -10000 < n < 10000
+fib() {
+  export BC_LINE_LENGTH=0
+  fib=(0 1)
+  abs=$(( $1 > 0 ? $1 : $1 * -1 ))
+  for i in $(seq -s' ' 0 "$abs"); do
+    a=${#fib[@]}
+    fib+=( "$(bc<<<"${fib[$((a-2))]} + ${fib[$((a-1))]}")" )
+  done
+  bc<<<"if ( $1 > 0 ) ${fib["$abs"]} else -${fib["$abs"]}"
 }
 ```
 
