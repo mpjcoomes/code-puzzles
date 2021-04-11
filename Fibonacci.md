@@ -20,7 +20,16 @@ Write a program to generate the *n*<sup>th</sup> Fibonacci number.
 
 ### bash
 ```bash
-
+fib() {
+export BC_LINE_LENGTH=0
+fib=(0 1)
+max=$(( $1 > 0 ? $1 : $1 * -1 ))
+for i in $(seq -s' ' 0 "$max"); do
+  a=${#fib[@]}
+  fib+=( "$(bc<<<"${fib[$((a-2))]} + ${fib[$((a-1))]}")" )
+done
+bc<<<"if ( $1 > 0 ) ${fib["$max"]} else -${fib["$max"]}"
+}
 ```
 
 ### PostgreSQL
