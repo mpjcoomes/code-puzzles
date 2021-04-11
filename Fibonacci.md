@@ -20,26 +20,39 @@ Write a program to generate the *n*<sup>th</sup> Fibonacci number.
 
 ### bash
 ```bash
-# 0 <= n < 93
+# iterative, 0 <= n < 93
 fib() {
   fib=(0 1)
   for i in $(seq -s' ' 0 "$1"); do
-    a=${#fib[@]}
-    fib+=( "$(( ${fib[$((a-2))]} + ${fib[$((a-1))]} ))" )
+    n=${#fib[@]}
+    fib+=( "$(( ${fib[$((n-2))]} + ${fib[$((n-1))]} ))" )
   done
   echo "${fib["$1"]}"
 }
 
-# support negafibonacci and large numbers, tested -10000 < n < 10000
+# negafibonacci, tested -10000 < n < 10000
 fib() {
   export BC_LINE_LENGTH=0
   fib=(0 1)
   abs=$(( $1 > 0 ? $1 : $1 * -1 ))
   for i in $(seq -s' ' 0 "$abs"); do
-    a=${#fib[@]}
-    fib+=( "$(bc<<<"${fib[$((a-2))]} + ${fib[$((a-1))]}")" )
+    n=${#fib[@]}
+    fib+=( "$(bc<<<"${fib[$((n-2))]} + ${fib[$((n-1))]}")" )
   done
   bc<<<"if ( $1 > 0 ) ${fib["$abs"]} else -${fib["$abs"]}"
+}
+
+# recursive
+fib() {
+  if [ "$1" -eq 0 ]; then
+    echo 0
+  elif [ "$1" -eq 1 ]; then
+    echo 1
+  else
+    i=$(fib $(( $1 - 1 )) )
+    j=$(fib $(( $1 - 2 )) )
+    echo $(( i + j ))
+  fi
 }
 ```
 
