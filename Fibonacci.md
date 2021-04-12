@@ -11,25 +11,27 @@ Fibonacci numbers form an *F<sub>n</sub>* sequence where each number is the sum 
 
 Thus the positive sequence terms are: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987, 1597, 2584, 4181, 6765, 10946, 17711, 28657, ...
 
-Write a program to generate the *n*<sup>th</sup> Fibonacci number.
+Write a program to generate the *n*<sup>th</sup> Fibonacci number. Optionally, support the bidirectional negative sequence (i.e. negafibonacci).
 
 ### python
 ```python
+# iterative, tested n < 400000
+def fib(n):
+    fibl = [0, 1]
+    for i in range(0, n):
+        fibl.append(fibl[-1] + fibl[-2])
+    return fibl[n]
 
+# rescursive, tested n < 35
+def fib(n):
+    if n < 2:
+        return n
+    else:
+        return fib(n - 1) + fib(n - 2)
 ```
 
 ### bash
 ```bash
-# iterative, 0 <= n < 93
-fib() {
-  fib=(0 1)
-  for i in $(seq -s' ' 0 "$1"); do
-    n=${#fib[@]}
-    fib+=( "$(( ${fib[$((n-2))]} + ${fib[$((n-1))]} ))" )
-  done
-  echo "${fib["$1"]}"
-}
-
 # negafibonacci, tested -10000 < n < 10000
 fib() {
   export BC_LINE_LENGTH=0
@@ -37,17 +39,25 @@ fib() {
   j=$(( $1 > 0 ? $1 : $1 * -1 ))
   for i in $(seq -s' ' 0 "$j"); do
     n=${#fib[@]}
-    fib+=( "$(bc<<<"${fib[$((n-2))]} + ${fib[$((n-1))]}")" )
+    fib+=( "$(bc<<<"${fib[$((n-1))]} + ${fib[$((n-2))]}")" )
   done
   bc<<<"if ( $1 > 0 ) ${fib["$j"]} else -${fib["$j"]}"
 }
 
-# recursive
+# simple iterative, tested n < 93
 fib() {
-  if [ "$1" -eq 0 ]; then
-    echo 0
-  elif [ "$1" -eq 1 ]; then
-    echo 1
+  fib=(0 1)
+  for i in $(seq -s' ' 0 "$1"); do
+    n=${#fib[@]}
+    fib+=( "$(( ${fib[$((n-1))]} + ${fib[$((n-2))]} ))" )
+  done
+  echo "${fib["$1"]}"
+}
+
+# recursive, inefficient, tested n < 25
+fib() {
+  if [ "$1" -lt 2 ]; then
+    echo "$1"
   else
     i=$(fib $(( $1 - 1 )) )
     j=$(fib $(( $1 - 2 )) )
@@ -58,7 +68,7 @@ fib() {
 
 ### PostgreSQL
 ```sql
--- nested tabular, tested to n < 10000
+-- nested tabular, tested n < 10000
 CREATE TABLE fib AS VALUES (0.), (1);
 do $$
 declare
@@ -81,7 +91,7 @@ raise notice '%',
 	OFFSET 1;
 end; $$;
 
--- formulaic, highly performant, tested n < 500000
+-- in-memory, performant, tested n < 500000
 do $$
 declare
 	n integer := 10;
