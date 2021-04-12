@@ -58,11 +58,11 @@ fib() {
 
 ### PostgreSQL
 ```sql
--- tesed to n < 10000
+-- nested tabular, tested to n < 10000
 CREATE TABLE fib AS VALUES (0.), (1);
 do $$
 declare
-	n integer:= 1000;
+	n integer:= 10;
 begin
 for i in 1..n loop
 	INSERT INTO fib
@@ -79,5 +79,24 @@ raise notice '%',
 	ORDER BY column1 DESC
 	LIMIT 1
 	OFFSET 1;
+end; $$;
+
+-- formulaic, highly performant, tested n < 500000
+do $$
+declare
+	n integer := 10;
+	i integer := 0;
+	k numeric := 0; 
+	j numeric := 1;
+begin
+	if n = 0 then
+		k := 0;
+	end if;
+	loop
+		exit when i = n;
+		i := i + 1;
+		select j, k + j into k, j;
+	end loop;
+	raise notice '%', k;
 end; $$;
 ```
