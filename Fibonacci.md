@@ -62,17 +62,17 @@ fib() {
 CREATE TABLE fib AS VALUES (0.), (1);
 do $$
 declare
-	n integer:= 10000;
+	n integer:= 1000;
 begin
-	for i in 1..n loop
-		INSERT INTO fib
-		SELECT SUM(column1)
-		FROM (
-			SELECT *
-			FROM fib
-			ORDER BY column1 DESC
-			LIMIT 2
-			) AS t;
+for i in 1..n loop
+	INSERT INTO fib
+	SELECT SUM(column1)
+	FROM (
+		SELECT *
+		FROM fib
+		ORDER BY column1 DESC
+		LIMIT 2
+		) AS t;
 end loop;
 raise notice '%',
 	* FROM fib
