@@ -36,7 +36,7 @@ def fib(n):
 fib() {
   export BC_LINE_LENGTH=0
   fib=(0 1)
-  j=$(( $1 > 0 ? $1 : $1 * -1 ))
+  j=$( echo "$1" | tr -d '-')
   for i in $(seq -s' ' 0 "$j"); do
     n=${#fib[@]}
     fib+=( "$(bc<<<"${fib[$((n-1))]} + ${fib[$((n-2))]}")" )
