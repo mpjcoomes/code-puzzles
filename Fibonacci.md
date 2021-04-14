@@ -28,6 +28,15 @@ def fib(n):
         return n
     else:
         return fib(n - 1) + fib(n - 2)
+	
+# negafibonacci recursive, -35 < n < 35
+def fib(n):
+    if n < 0:
+        return fib(n + 2) - fib(n + 1)
+    elif n < 2:
+        return n
+    else:
+        return fib(n - 1) + fib(n - 2)
 ```
 
 ### bash
