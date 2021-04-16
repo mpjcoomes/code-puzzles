@@ -17,6 +17,17 @@ def fact(n):
         return 1
     else:
         return n * fact(n - 1)
+
+# iterative, n < 100000
+def fact(n):
+    for i in range(1, n):
+        n = n * i
+    return n
+
+# math function, n < 200000
+from math import prod
+def fact(n):
+    return prod(range(1, n + 1))
 ```
 
 ### bash
@@ -26,10 +37,15 @@ fact() {
   if [ "$1" -lt 1 ]; then
     echo 1
   else
-    i=$(fact $(("$1"-1)))
-    echo $(("$1"*i))
+    i=$(fact $(("$1" - 1)))
+    echo $(("$1" * i))
   fi
 }
+
+# iterative, n < 30000
+fact() {
+  export BC_LINE_LENGTH=0
+  bc <<<"$(seq -s'*' 1 "$1")"
 ```
 
 ### PostgreSQL
