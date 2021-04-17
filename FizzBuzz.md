@@ -20,7 +20,7 @@ Print the integers from 1 to 100 inclusive. Instead of the number, print Fizz fo
 	Fizz
 	Buzz
 
-### python
+### Python
 ```python
 for i in range(1, 101):
     if i % 15 == 0:
@@ -33,7 +33,7 @@ for i in range(1, 101):
         print(i)
 ```
 
-### bash
+### Bash
 ```bash
 for i in {1..100}; do
 	( (( i % 15 == 0 )) && echo 'FizzBuzz' ) ||
