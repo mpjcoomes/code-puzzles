@@ -13,7 +13,7 @@ Thus the sequence terms are: 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628
 Write a program to generate the *n*<sup>th</sup> factorial.
 
 ### Python
-This is a programming exercise, in practice one would simply use Python's factorial() function.
+This is a programming exercise, in practice one would simply use Python's math.factorial() function.
 ```python
 # recursive, n < 998
 def fact(n):
