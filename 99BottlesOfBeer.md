@@ -13,7 +13,7 @@ Print lyrics for "99 Bottles of Beer on the Wall" from 99 to 0, grammatically co
 	Take one down, pass it around
 	0 bottles of beer on the wall
 
-### python
+### Python
 ```python
 a = "bottles of beer"
 b = "on the wall"
@@ -37,7 +37,7 @@ for i in range(99, 0, -1):
         print(i - 1, a, b, "\n")
 ```
 
-### bash
+### Bash
 ```bash
 a="bottles of beer"
 b="on the wall"
