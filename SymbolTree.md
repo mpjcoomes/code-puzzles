@@ -10,7 +10,9 @@ Write a program that outputs a symmetrical symbol tree for *n* rows. For example
 
 ### Python
 ```python
-
+def shrub(n):
+    for i, j in zip(range(n, 0, -1), range(1, n * 2, 2)):
+        print(" " * i, "*" * j)
 ```
 
 ### Bash
