@@ -77,6 +77,20 @@ fib() {
 
 ### PostgreSQL
 ```sql
+-- recursive function, n < 30
+CREATE OR REPLACE FUNCTION fib(NUMERIC) RETURNS NUMERIC
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	if $1 < 2 then
+		return $1;
+	else
+		return fib($1 - 1) + fib($1 - 2);
+	end if;
+END; $$;
+
+select fib(20);
+
 -- iterative tabular, n < 10000
 CREATE TABLE fib AS VALUES (0.), (1);
 do $$
