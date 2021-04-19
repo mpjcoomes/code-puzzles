@@ -7,3 +7,4 @@ Certain algorithms and programming challenges are foundational to CS. This repo 
 -   [Factorial](Factorial.md)
 -   [Fibonacci Sequence](Fibonacci.md)
 -   [FizzBuzz](FizzBuzz.md)
+-   [Symbol Tree](SymbolTree.md)
