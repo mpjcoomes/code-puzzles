@@ -94,4 +94,12 @@ end; $$;
 
 SELECT *
 FROM tree;
+
+-- query, n = 10
+WITH tree AS (
+	SELECT generate_series(10, 1, -1) AS i,
+	generate_series(1, 2*10-1, 2) AS j
+)
+SELECT repeat(' ', i) || repeat('*', j) AS k
+FROM tree;
 ```
