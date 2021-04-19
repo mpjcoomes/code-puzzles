@@ -55,6 +55,22 @@ fact() {
 ### PostgreSQL
 As with Python, use PostgreSQL's factorial function in real-world applications.
 ```sql
+-- recursive function, n < 30000
+-- echo max_stack_depth = 10GB >> /var/lib/pgsql/13/data/postgresql.conf
+-- sed -i '/\[Service\]/aLimitSTACK=infinity' /usr/lib/systemd/system/postgresql-13.service
+CREATE OR REPLACE FUNCTION fact(NUMERIC) RETURNS NUMERIC
+LANGUAGE plpgsql
+AS $$
+BEGIN
+	if $1 = 0 then
+		return 1;
+	else
+		return $1 * fact($1 - 1);
+	end if;
+END; $$;
+
+select fact(20);
+
 -- mathematical, n < 400
 do $$
 declare
