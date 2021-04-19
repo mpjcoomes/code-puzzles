@@ -52,7 +52,7 @@ for i in $(seq 1 "$n" | sort -rn); do
   printf ' %.0s' $(seq 1 $i)
   printf '*%.0s' $(seq 1 $j)
   echo ''
-  echo $(( j=j+++2 )) > /dev/null
+  j=$(( j + 2 ))
 done
 ```
 
