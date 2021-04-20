@@ -29,14 +29,14 @@ def fib(n):
     else:
         return fib(n - 1) + fib(n - 2)
 	
-# recursive negafibonacci, -35 < n < 35
-def fib(n):
+# recursive negafibonacci, -40 < n < 40 compiled to cython
+def cfib(n: int) -> int:
     if n < 0:
-        return fib(n + 2) - fib(n + 1)
+        return cfib(n + 2) - cfib(n + 1)
     elif n < 2:
         return n
     else:
-        return fib(n - 1) + fib(n - 2)
+        return cfib(n - 1) + cfib(n - 2)
 ```
 
 ### Bash
