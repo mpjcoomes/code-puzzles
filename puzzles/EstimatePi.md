@@ -1,4 +1,4 @@
-# Calculate *π*
+# Estimate *π*
 
 The value of *π* can be approximated via Leibniz's alternating series.
 
