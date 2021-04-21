@@ -56,5 +56,5 @@ BEGIN
 	raise notice '%', k;
 END; $$;
 
-select pg_pi(300000);
+SELECT pg_pi(300000);
 ```
