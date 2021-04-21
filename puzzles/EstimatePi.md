@@ -51,7 +51,7 @@ BEGIN
 	for _ in 1..$1 loop
 		select k + s * 4 / d into k;
 		s := s * -1;
-        d := d + 2;
+		d := d + 2;
 	end loop;
 	raise notice '%', k;
 END; $$;
