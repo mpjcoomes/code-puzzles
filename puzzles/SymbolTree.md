@@ -16,6 +16,16 @@ def shrub(n):
     for i, j in zip(range(n, 0, -1), range(1, n * 2, 2)):
         print(" " * i, "*" * j)
 
+# iterative array
+def shrub(n):
+    x = []
+    for i, j in zip(range(n, 0, -1), range(1, n * 2, 2)):
+        x += [" " * i + "*" * j]
+    return x
+
+for i in shrub(5):
+    print(i)
+
 # iterative string print
 def shrub(n):
     print(
