@@ -39,19 +39,19 @@ for i in range(99, 0, -1):
 
 ### Bash
 ```bash
-a="bottles of beer"
-b="on the wall"
-c="Take one down, pass it around"
+
+a="bottles of beer on the wall"
+b="Take one down, pass it around"
 
 for i in {99..1}; do
   if (( i > 2 )); then
-    echo -e "$i $a $b\n$i $a\n$c\n$(( i -1 )) $a $b\n"
+    echo -e "$i $a\n$i ${a% on*}\n$b\n$(( i -1 )) $a\n"
   elif (( i == 2 )); then
-    echo -e "$i $a $b\n$i $a\n$c"
-    echo -e "$(( i -1 )) $a $b\n" | tr -d s
+    echo -e "$i $a\n$i ${a% on*}\n$b"
+    echo -e "$(( i -1 )) $a\n" | tr -d s
   else
-    echo -e "$i $a $b\n$i $a" | tr -d s
-    echo -e "$c\n$(( i -1 )) $a $b"
+    echo -e "$i $a\n$i ${a% on*}" | tr -d s
+    echo -e "$b\n$(( i -1 )) $a"
   fi
 done
 ```
