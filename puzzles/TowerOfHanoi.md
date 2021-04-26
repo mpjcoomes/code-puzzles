@@ -24,7 +24,7 @@ Each disk is represented by a bit. The value of each bit is directly proportiona
 
 When successive bits have the same value, the disks they represent are stacked. When successive bits differ, the disk is one position to the left or right of the previous disk.
 
-Decoding the bitstring shows the location of each disk. n = # of larger disks (i.e. more significant bits) stacked on a peg, not including the disk at the base of the stack, +1 if on the initial leftmost peg. If n is even, the disk for the bit of interest is one rod to the right. If n is odd, the disk is one rod to the left. This assumes wrapping, meaning one position left of the leftmost rod equates to the rightmost rod.
+Decoding the bitstring shows the location of each disk. *n* = # of larger disks (i.e. more significant bits) stacked on a peg, not including the disk at the base of the stack, +1 if on the initial leftmost peg. If *n* is even, the disk for the bit of interest is one rod to the right. If *n* is odd, the disk is one rod to the left. This assumes wrapping, meaning one position left of the leftmost rod equates to the rightmost rod.
 
 The binary solution simply increments by 1 each turn and moves a disk in accord with these rules. Embedded with the bitstring is the position of disks at any point.
 
@@ -65,25 +65,46 @@ AND 0101 (dec 5)               OR 0101 (dec 5)
 The operation indicates to move a disk from rod 1 to rod 2, just as above.
 
 
+### Recursive
+For a tower of *n* disks, a recursive approach tries to first move *n* - 1, or *m*, disks from one rod to another. Once this is achieved, the final disk can be shifted to the empty rod, and the reverse process again moves the *m* disks on top of it. The same approach is used to solve the initial move of *m* disks; Move *n* - 2 disks from one rod to another.
+
+Take rod 0 as the origin of *n* disks, and rod 2 as the goal. The only state where that largest disk can move from the origin rod 0 to the destination rod 2 is when the other *n* - 1 = *m* disks are on the spare rod 1. Therefore, the 1st goal is moving *m* disks from rod 0 to rod 1.
+
+Similarly, the only state where the largest disk in this reduced set of *m* disks can move to rod 1 is when *m* - 1 disks are on rod 2. To achieve the 1st goal of moving *n* - 1 disks from rod 0 to rod 1, *n* - 2 disks must be moved to rod 2. The target rod thus flips between the spare and end-state target as the number of disks decrements with each recursion; You move three disks from 0 to 2 by moving two disks from 0 to 1, which in turn is done by moving one disk from 0 to 2.
+
+
 
 
 ### Python
 ```python
 # binary
-def disks(z, a, b):
-    z[b].append(z[a].pop())
+def disk_shift(rods, origin, target):
+    rods[target].append(rods[origin].pop())
     for i in range(3):
-        print(i, z[i])
+        print(i, rods[i])
 
 def b_toh(n):
-    x = [[*range(n, 0, -1)], [], []]
+    rods = [[*range(n, 0, -1)], [], []]
     for i in range(1, 1 << n):
-        a = (i & i - 1) % 3
-        b = ((i | i - 1) + 1) % 3
-        disks(x, a, b)
+        origin = (i & i - 1) % 3
+        target = ((i | i - 1) + 1) % 3
+        disk_shift(rods, origin, target)
         print("Move", i, format(i, "#0" + str(n + 2) + "b"))
 
-b_toh(4)
+b_toh(3)
+
+# recursive
+disks = 3
+rods = [[*range(disks, 0, -1)], [], []]
+
+def r_toh(n, origin, target, spare):
+    if n > 0:
+        r_toh(n - 1, origin, spare, target)
+        print(n, " from ", origin, " to ", target)
+        disk_shift(rods, origin, target)
+        r_toh(n - 1, spare, target, origin)
+
+r_toh(disks, 0, 2, 1)
 ```
 
 ### Bash
