@@ -51,12 +51,12 @@ State after move 6, 0b0110:
 For 0110, disk 4 must be on a different rod from disk 3, which must be on the same rod as disk 2, which must be a different rod than disk 1.
 
 Furthermore, a bitwise operation can calculate each move via source and destination rods for the *i*th move: 
-From rod **( *i* AND *i* - 1) mod 3** to rod **(( *i* XOR *i* - 1 ) + 1) mod 3**.
+From rod **( *i* AND *i* - 1) mod 3**, to rod **(( *i* OR *i* - 1 ) + 1) mod 3**.
 
 ```
 From:                          To:
-    0110 (dec 5)                  0110 (dec 5)
-AND 0101 (dec 4)               OR 0101 (dec 4)
+    0110 (dec 6)                  0110 (dec 6)
+AND 0101 (dec 5)               OR 0101 (dec 5)
   = 0100 (dec 4)                = 0111 (dec 7)  
   = 4 % 3                       = ( 7 + 1 ) % 3
   = 1                           = 2
@@ -71,7 +71,6 @@ The operation indicates to move a disk from rod 1 to rod 2, just as above.
 ```python
 # binary
 def disks(z, a, b):
-    print("---------------")
     z[b].append(z[a].pop())
     for i in range(3):
         print(i, z[i])
