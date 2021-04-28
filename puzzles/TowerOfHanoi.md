@@ -12,8 +12,9 @@ The goal is to move all disks from 1 rod to another under the following restrict
 The minimum number of moves required, for *n* disks, is always 2<sup>*n*</sup> - 1.
 
 ```python
-print([2 ** i - 1 for i in range(1, 10)])
-# [1, 3, 7, 15, 31, 63, 127, 255, 511]
+print(*[str(i) + ":" + str(2 ** i - 1) for i in range(1, 12)])
+
+# 1:1 2:3 3:7 4:15 5:31 6:63 7:127 8:255 9:511 10:1023 11:2047
 ```
 
 This puzzle is old and well studied. Notable solutions are binary, recursive, and iterative. 
@@ -73,38 +74,76 @@ Take rod 0 as the origin of *n* disks, and rod 2 as the goal. The only state whe
 Similarly, the only state where the largest disk in this reduced set of *m* disks can move to rod 1 is when *m* - 1 disks are on rod 2. To achieve the 1st goal of moving *n* - 1 disks from rod 0 to rod 1, *n* - 2 disks must be moved to rod 2. The target rod thus flips between the spare and end-state target as the number of disks decrements with each recursion; You move three disks from 0 to 2 by moving two disks from 0 to 1, which in turn is done by moving one disk from 0 to 2.
 
 
+### Iterative
+This solution reduces those above into three iterable moves for an even or odd stack. For each move, two rods are given, and one disk shift between them is legal.
+
+- Even: 0-1, 0-2, 1-2.
+- Odd: 0-2, 0-1, 1-2.
+
+The resulting solution is optimal in accord with 2<sup>*n*</sup> - 1 turns. This is significant as it determines where in the loop to break to avoid raising exceptions. An even number of disks solves after an odd number of turns, so all three moves are carried out each iteration. An odd number of disks solves after an even number of turns, so all three moves, plus an addition first move from the next iteration, are carried out before breaking.
 
 
 ### Python
 ```python
 # binary
-def disk_shift(rods, origin, target):
+def disk_shift(rods: list, origin: int, target: int) -> None:
     rods[target].append(rods[origin].pop())
     for i in range(3):
         print(i, rods[i])
 
-def b_toh(n):
-    rods = [[*range(n, 0, -1)], [], []]
+def b_toh(n: int) -> None:
+    b_rods = [[*range(n, 0, -1)], [], []]
     for i in range(1, 1 << n):
         origin = (i & i - 1) % 3
         target = ((i | i - 1) + 1) % 3
-        disk_shift(rods, origin, target)
         print("Move", i, format(i, "#0" + str(n + 2) + "b"))
+        disk_shift(b_rods, origin, target)
 
 b_toh(3)
 
-# recursive
-disks = 3
-rods = [[*range(disks, 0, -1)], [], []]
 
-def r_toh(n, origin, target, spare):
+# recursive, deps: disk_shift()
+disks = 3
+r_rods = [[*range(disks, 0, -1)], [], []]
+
+def r_toh(n: int, origin: int, target: int, spare: int) -> None:
     if n > 0:
         r_toh(n - 1, origin, spare, target)
         print(n, " from ", origin, " to ", target)
-        disk_shift(rods, origin, target)
+        disk_shift(r_rods, origin, target)
         r_toh(n - 1, spare, target, origin)
 
 r_toh(disks, 0, 2, 1)
+
+
+# iterative, deps: disk_shift()
+def legal(rods: list, a: int, b: int) -> (int, int):
+    if not rods[a]:
+        return b, a
+    elif not rods[b]:
+        return a, b
+    elif rods[a][-1] < rods[b][-1]:
+        return a, b
+    else:
+        return b, a
+
+def i_toh(n: int) -> None:
+    i_rods = [[*range(n, 0, -1)], [], []]
+    while True:
+        if n % 2 == 0:
+            disk_shift(i_rods, *legal(i_rods, 0, 1))
+            disk_shift(i_rods, *legal(i_rods, 0, 2))
+            disk_shift(i_rods, *legal(i_rods, 1, 2))
+            if len(i_rods[2]) == n:
+                break
+        else:
+            disk_shift(i_rods, *legal(i_rods, 0, 2))
+            if len(i_rods[2]) == n:
+                break
+            disk_shift(i_rods, *legal(i_rods, 0, 1))
+            disk_shift(i_rods, *legal(i_rods, 1, 2))
+
+i_toh(3)
 ```
 
 ### Bash
