@@ -148,7 +148,32 @@ i_toh(3)
 
 ### Bash
 ```bash
+# binary
+w_num() {
+  case $1 in
+  0) echo "A" ;;
+  1) echo "B" ;;
+  2) echo "C" ;;
+  esac
+}
 
+b_toh() {
+  A=($(seq "$1" -1 1))
+  B=()
+  C=()
+  for i in $(seq 1 $(((1 << $1) - 1))); do
+    origin=$(w_num $(((i & i - 1) % 3)))
+    target=$(w_num $((((i | i - 1) + 1) % 3)))
+    declare -n aro=$origin
+    declare -n art=$target
+    art+=("${aro[-1]}")
+    unset "aro[-1]"
+    echo 0: "${A[*]}"
+    echo 1: "${B[*]}"
+    echo 2: "${C[*]}"
+    echo ---------------
+  done
+}
 ```
 
 ### PostgreSQL
