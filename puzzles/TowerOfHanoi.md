@@ -109,7 +109,7 @@ r_rods = [[*range(disks, 0, -1)], [], []]
 def r_toh(n: int, origin: int, target: int, spare: int) -> None:
     if n > 0:
         r_toh(n - 1, origin, spare, target)
-        print(n, " from ", origin, " to ", target)
+        print(n, "from", origin, "to", target)
         disk_shift(r_rods, origin, target)
         r_toh(n - 1, spare, target, origin)
 
@@ -174,6 +174,19 @@ b_toh() {
     echo ---------------
   done
 }
+
+b_toh 4
+
+# recursive, 1 disks, 2 origin, 3 target, 4 spare
+r_toh() {
+  if [ "$1" -gt 0 ]; then
+    r_toh $(($1 - 1)) "$2" "$4" "$3"
+    echo "$1" from "$2" to "$3"
+    r_toh $(($1 - 1)) "$4" "$3" "$2"
+  fi
+}
+
+r_toh 4 0 2 1
 ```
 
 ### PostgreSQL
