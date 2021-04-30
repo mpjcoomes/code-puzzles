@@ -162,12 +162,10 @@ b_toh() {
   B=()
   C=()
   for i in $(seq 1 $(((1 << $1) - 1))); do
-    origin=$(w_num $(((i & i - 1) % 3)))
-    target=$(w_num $((((i | i - 1) + 1) % 3)))
-    declare -n aro=$origin
-    declare -n art=$target
-    art+=("${aro[-1]}")
-    unset "aro[-1]"
+    declare -n orig=$(w_num $(((i & i - 1) % 3)))
+    declare -n targ=$(w_num $((((i | i - 1) + 1) % 3)))
+    targ+=("${orig[-1]}")
+    unset "orig[-1]"
     echo 0: "${A[*]}"
     echo 1: "${B[*]}"
     echo 2: "${C[*]}"
