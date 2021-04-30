@@ -101,7 +101,6 @@ def b_toh(n: int) -> None:
 
 b_toh(3)
 
-
 # recursive, deps: disk_shift()
 disks = 3
 r_rods = [[*range(disks, 0, -1)], [], []]
@@ -114,7 +113,6 @@ def r_toh(n: int, origin: int, target: int, spare: int) -> None:
         r_toh(n - 1, spare, target, origin)
 
 r_toh(disks, 0, 2, 1)
-
 
 # iterative, deps: disk_shift()
 def legal(rods: list, a: int, b: int) -> (int, int):
@@ -130,20 +128,13 @@ def legal(rods: list, a: int, b: int) -> (int, int):
 def i_toh(n: int) -> None:
     i_rods = [[*range(n, 0, -1)], [], []]
     while True:
-        if n % 2 == 0:
-            disk_shift(i_rods, *legal(i_rods, 0, 1))
-            disk_shift(i_rods, *legal(i_rods, 0, 2))
-            disk_shift(i_rods, *legal(i_rods, 1, 2))
+        for i, j in zip([0, 0, 1], [1, 2, 2] if n % 2 == 0 else [2, 1, 2]):
+            print(i, j)
+            disk_shift(i_rods, *legal(i_rods, i, j))
             if len(i_rods[2]) == n:
-                break
-        else:
-            disk_shift(i_rods, *legal(i_rods, 0, 2))
-            if len(i_rods[2]) == n:
-                break
-            disk_shift(i_rods, *legal(i_rods, 0, 1))
-            disk_shift(i_rods, *legal(i_rods, 1, 2))
+                return None
 
-i_toh(3)
+i_toh(4)
 ```
 
 ### Bash
@@ -166,10 +157,7 @@ b_toh() {
     declare -n targ=$(w_num $((((i | i - 1) + 1) % 3)))
     targ+=("${orig[-1]}")
     unset "orig[-1]"
-    echo 0: "${A[*]}"
-    echo 1: "${B[*]}"
-    echo 2: "${C[*]}"
-    echo ---------------
+    echo -e "0: "${A[*]}"\n1: "${B[*]}"\n2: "${C[*]}"\n"
   done
 }
 
@@ -185,6 +173,44 @@ r_toh() {
 }
 
 r_toh 4 0 2 1
+
+# iterative
+legal() {
+  a="$1[@]"
+  a=("${!a}")
+  b="$2[@]"
+  b=("${!b}")
+  if [ ! "${a[0]}" ]; then
+    echo "$2""$1"
+  elif [ ! "${b[0]}" ]; then
+    echo "$1""$2"
+  elif [ "${a[-1]}" -lt "${b[-1]}" ]; then
+    echo "$1""$2"
+  else
+    echo "$2""$1"
+  fi
+}
+
+i_toh() {
+  A=($(seq "$1" -1 1))
+  B=()
+  C=()
+  while true; do
+    for i in $([ $((3 % 2)) -eq 0 ] && echo AB AC BC || echo AC AB BC); do
+      x=$(legal "${i:0:1}" "${i:1:2}")
+      declare -n orig=${x:0:1}
+      declare -n targ=${x:1:2}
+      targ+=("${orig[-1]}")
+      unset "orig[-1]"
+      echo -e "0: ${A[*]}\n1: ${B[*]}\n2: ${C[*]}\n"
+      if [ "${#B[*]}" -eq "$1" ] || [ "${#C[*]}" -eq "$1" ]; then
+        return 0
+      fi
+    done
+  done
+}
+
+i_toh 3
 ```
 
 ### PostgreSQL
