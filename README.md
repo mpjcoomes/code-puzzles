@@ -8,4 +8,5 @@ Certain algorithms and programming challenges are foundational to CS. This repo 
 -   [Factorial](puzzles/Factorial.md)
 -   [Fibonacci Sequence](puzzles/Fibonacci.md)
 -   [FizzBuzz](puzzles/FizzBuzz.md)
+-   [Tower of Hanoi](puzzles/TowerOfHanoi.md)
 -   [Symbol Tree](puzzles/SymbolTree.md)
