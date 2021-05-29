@@ -104,10 +104,7 @@ END;
 $$;
 
 -- tabular iterative, n < 2000
-CREATE TABLE fact AS
-VALUES (
-    1.
-);
+CREATE TABLE fact AS VALUES (1.);
 
 DO $$
 DECLARE
