@@ -235,7 +235,7 @@ $$;
 SELECT
     b_toh (3);
 
--- recursive
+-- recursive, 1 disks, 2 origin, 3 target, 4 spare
 CREATE OR REPLACE FUNCTION r_toh (int, int, int, int)
     RETURNS varchar
     LANGUAGE 'plpgsql'
