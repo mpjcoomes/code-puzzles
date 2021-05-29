@@ -58,60 +58,77 @@ As with Python, use PostgreSQL's factorial function in real-world applications.
 -- recursive function, n < 30000
 -- echo max_stack_depth = 10GB >> /var/lib/pgsql/13/data/postgresql.conf
 -- sed -i '/\[Service\]/aLimitSTACK=infinity' /usr/lib/systemd/system/postgresql-13.service
-CREATE OR REPLACE FUNCTION fact(NUMERIC) RETURNS NUMERIC
-LANGUAGE plpgsql
-AS $$
+CREATE OR REPLACE FUNCTION fact (numeric)
+    RETURNS numeric
+    LANGUAGE plpgsql
+    AS $$
 BEGIN
-	if $1 = 0 then
-		return 1;
-	else
-		return $1 * fact($1 - 1);
-	end if;
-END; $$;
+    IF $1 = 0 THEN
+        RETURN 1;
+    ELSE
+        RETURN $1 * fact ($1 - 1);
+    END IF;
+END;
+$$;
 
-select fact(20);
+SELECT
+    fact (20);
 
 -- mathematical, n < 400
-do $$
-declare
-	n integer:= 400;
-begin
-	raise notice '%',
-	ROUND(POWER(10, SUM(LOG(CAST(i AS NUMERIC(1000,990))))))
-	FROM GENERATE_SERIES(1,n) AS i;
-end; $$;
+DO $$
+DECLARE
+    n integer := 20;
+BEGIN
+    RAISE NOTICE '%', ROUND(POWER(10, SUM(LOG(CAST(i AS numeric(1000, 990))))))
+FROM
+    GENERATE_SERIES(1, n) AS i;
+END;
+$$;
 
 -- variable, n < 30000
-do $$
-declare
-	n integer := 30000;
-	i integer := 0;
-	j numeric := 1;
-begin
-	loop
-		exit when i = n;
-		i := i + 1;
-		select j * i into j;
-	end loop;
-	raise notice '%', j;
-end; $$;
+DO $$
+DECLARE
+    n integer := 20;
+    i integer := 0;
+    j numeric := 1;
+BEGIN
+    LOOP
+        exit
+        WHEN i = n;
+        i := i + 1;
+        SELECT
+            j * i INTO j;
+    END LOOP;
+    RAISE NOTICE '%', j;
+END;
+$$;
 
 -- tabular iterative, n < 2000
-CREATE TABLE fact AS VALUES (1.);
-do $$
-declare
-	n integer:= 2000;
-begin
-for i in 1..n loop
-	INSERT INTO fact
-	SELECT column1 * i
-	FROM fact
-	ORDER BY column1 DESC
-	LIMIT 1;
-end loop;
-raise notice '%',
-	* FROM fact
-	ORDER BY column1 DESC
-	LIMIT 1;
-end; $$;
+CREATE TABLE fact AS
+VALUES (
+    1.
+);
+
+DO $$
+DECLARE
+    n integer := 20;
+BEGIN
+    FOR i IN 1..n LOOP
+        INSERT INTO fact
+        SELECT
+            column1 * i
+        FROM
+            fact
+        ORDER BY
+            column1 DESC
+        LIMIT 1;
+    END LOOP;
+    RAISE NOTICE '%', *
+FROM
+    fact
+ORDER BY
+    column1 DESC
+LIMIT 1;
+END;
+$$;
 ```
