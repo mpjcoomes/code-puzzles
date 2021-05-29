@@ -69,47 +69,64 @@ done
 ### PostgreSQL
 ```sql
 -- functional
-CREATE OR REPLACE FUNCTION tree (n INT)
-	RETURNS TABLE (k TEXT)
-LANGUAGE 'plpgsql'
-AS $$
+CREATE OR REPLACE FUNCTION tree (n int)
+    RETURNS TABLE (
+        k text)
+    LANGUAGE 'plpgsql'
+    AS $$
 BEGIN
-	RETURN QUERY
-		WITH tree AS (
-			SELECT j, row_number() over () AS i
-			FROM generate_series(2*n-1, 0, -2) AS j
-		)
-		SELECT repeat(' ', i::INT) || repeat('*', j) AS k
-		FROM tree
-		ORDER BY k;
-END; $$;
+    RETURN QUERY WITH tree AS (
+        SELECT
+            j,
+            row_number() OVER () AS i
+        FROM
+            generate_series(2 * n - 1, 0, - 2) AS j
+)
+    SELECT
+        repeat(' ', i::int) || repeat('*', j) AS k
+FROM
+    tree
+ORDER BY
+    k;
+END;
+$$;
 
-SELECT tree(10);
+SELECT
+    tree (10);
 
 -- iterative, tabular
 CREATE TABLE tree (dummy VARCHAR);
-do $$
-declare
-	n integer := 5;
-	j integer := 1;
-begin
-	loop
-		exit when n = 0;
-			INSERT INTO tree
-			select REPEAT(' ', n) || REPEAT('*', j);
-			n := n - 1;
-			j := j + 2;
-	end loop;
-end; $$;
 
-SELECT *
-FROM tree;
+DO $$
+DECLARE
+    n integer := 5;
+    j integer := 1;
+BEGIN
+    LOOP
+        EXIT
+        WHEN n = 0;
+        INSERT INTO tree
+        SELECT
+            REPEAT(' ', n) || REPEAT('*', j);
+        n := n - 1;
+        j := j + 2;
+    END LOOP;
+END;
+$$;
+
+SELECT
+    *
+FROM
+    tree;
 
 -- query, n = 10
 WITH tree AS (
-	SELECT generate_series(10, 1, -1) AS i,
-	generate_series(1, 2*10-1, 2) AS j
+    SELECT
+        generate_series(10, 1, - 1) AS i,
+        generate_series(1, 2 * 10 - 1, 2) AS j
 )
-SELECT repeat(' ', i) || repeat('*', j) AS k
-FROM tree;
+SELECT
+    repeat(' ', i) || repeat('*', j) AS k
+FROM
+    tree;
 ```
