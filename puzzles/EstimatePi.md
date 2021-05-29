@@ -40,21 +40,25 @@ pi 10000
 
 ### PostgreSQL
 ```sql
-CREATE OR REPLACE FUNCTION pg_pi(NUMERIC) RETURNS NUMERIC
-LANGUAGE plpgsql
-AS $$
+CREATE OR REPLACE FUNCTION pg_pi (numeric)
+    RETURNS numeric
+    LANGUAGE plpgsql
+    AS $$
 DECLARE
-	k numeric := 0;
-	s numeric := 1;
-	d numeric := 1;
+    k numeric := 0;
+    s numeric := 1;
+    d numeric := 1;
 BEGIN
-	for _ in 1..$1 loop
-		select k + s * 4 / d into k;
-		s := s * -1;
-		d := d + 2;
-	end loop;
-	raise notice '%', k;
-END; $$;
+    FOR _ IN 1.. $1 LOOP
+        SELECT
+            k + s * 4 / d INTO k;
+        s := s * - 1;
+        d := d + 2;
+    END LOOP;
+    RAISE NOTICE '%', k;
+END;
+$$;
 
-SELECT pg_pi(300000);
+SELECT
+    pg_pi (300000);
 ```
