@@ -215,5 +215,40 @@ i_toh 3
 
 ### PostgreSQL
 ```sql
+-- binary
+CREATE OR REPLACE FUNCTION b_toh (int)
+    RETURNS varchar
+    LANGUAGE 'plpgsql'
+    AS $$
+DECLARE
+    orig numeric;
+    targ numeric;
+BEGIN
+    FOR i IN 1.. (1 << $1) - 1 LOOP
+        orig := (i & i - 1) % 3;
+        targ := ((i | i - 1) + 1) % 3;
+        RAISE NOTICE 'Move %: From % to %', i, orig, targ;
+    END LOOP;
+END;
+$$;
 
+SELECT
+    b_toh (3);
+
+-- recursive
+CREATE OR REPLACE FUNCTION r_toh (int, int, int, int)
+    RETURNS varchar
+    LANGUAGE 'plpgsql'
+    AS $$
+BEGIN
+    IF $1 > 0 THEN
+        RETURN r_toh ($1 - 1, $2, $4, $3) || $1 || ' from ' || $2 || ' to ' || $3 || E'\n' || r_toh ($1 - 1, $4, $3, $2);
+    ELSE
+        RETURN '';
+    END IF;
+END;
+$$;
+
+SELECT
+    r_toh (3, 0, 2, 1);
 ```
