@@ -78,58 +78,72 @@ fib() {
 ### PostgreSQL
 ```sql
 -- recursive function, n < 30
-CREATE OR REPLACE FUNCTION fib(NUMERIC) RETURNS NUMERIC
-LANGUAGE plpgsql
-AS $$
+CREATE OR REPLACE FUNCTION fib (numeric)
+    RETURNS numeric
+    LANGUAGE plpgsql
+    AS $$
 BEGIN
-	if $1 < 2 then
-		return $1;
-	else
-		return fib($1 - 1) + fib($1 - 2);
-	end if;
-END; $$;
+    IF $1 < 2 THEN
+        RETURN $1;
+    ELSE
+        RETURN fib ($1 - 1) + fib ($1 - 2);
+    END IF;
+END;
+$$;
 
-select fib(20);
+SELECT
+    fib (20);
 
 -- iterative tabular, n < 10000
 CREATE TABLE fib AS VALUES (0.), (1);
-do $$
-declare
-	n integer:= 10;
-begin
-for i in 1..n loop
-	INSERT INTO fib
-	SELECT SUM(column1)
-	FROM (
-		SELECT *
-		FROM fib
-		ORDER BY column1 DESC
-		LIMIT 2
-		) AS t;
-end loop;
-raise notice '%',
-	* FROM fib
-	ORDER BY column1 DESC
-	LIMIT 1
-	OFFSET 1;
-end; $$;
+
+DO $$
+DECLARE
+    n integer := 20;
+BEGIN
+    FOR i IN 1..n LOOP
+        INSERT INTO fib
+        SELECT
+            SUM(column1)
+        FROM (
+            SELECT
+                *
+            FROM
+                fib
+            ORDER BY
+                column1 DESC
+            LIMIT 2) AS t;
+    END LOOP;
+    RAISE NOTICE '%', *
+FROM
+    fib
+ORDER BY
+    column1 DESC
+LIMIT 1 OFFSET 1;
+END;
+$$;
 
 -- variable, n < 500000
-do $$
-declare
-	n integer := 10;
-	i integer := 0;
-	k numeric := 0; 
-	j numeric := 1;
-begin
-	if n = 0 then
-		k := 0;
-	end if;
-	loop
-		exit when i = n;
-		i := i + 1;
-		select j, k + j into k, j;
-	end loop;
-	raise notice '%', k;
-end; $$;
+DO $$
+DECLARE
+    n integer := 20;
+    i integer := 0;
+    k numeric := 0;
+    j numeric := 1;
+BEGIN
+    IF n = 0 THEN
+        k := 0;
+    END IF;
+    LOOP
+        EXIT
+        WHEN i = n;
+        i := i + 1;
+        SELECT
+            j,
+            k + j INTO k,
+            j;
+    END LOOP;
+    RAISE NOTICE '%', k;
+END;
+$$;
 ```
