@@ -49,7 +49,7 @@ bb() {
     return 0
   else
     x=${1#$z}
-    x=$(sed "0,/$(flib "$z")/s///" <<<"$x")
+    x=${x/$(flib "$z")}
     bb "$x"
   fi
 }
