@@ -27,7 +27,6 @@ for i in range(99, 0, -1):
     else:
         print( i, a.replace("s", ""), b, "\n" + str(i), a.replace("s", ""), "\n" + c, "\n" + str(i - 1), a, b, "\n", )
 ```
-https://github.com/mpjcoomes/code-puzzles/blob/ff087a22bac6e36951c2f684697c19db219234fc/puzzles/99BottlesOfBeer.py#L1-L11
 
 ### Bash
 ```bash
