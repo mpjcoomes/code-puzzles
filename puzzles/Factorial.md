@@ -13,14 +13,16 @@ Thus the sequence terms are: 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628
 Write a program to generate the *n*<sup>th</sup> factorial.
 
 ### Python
-This is a programming exercise, in practice one would simply use Python's math.factorial() function.
+This is a programming exercise, in practice use Python's math.factorial() function.
 ```python
-# recursive, n < 998
+# recursive, n < 999
+def fact(n):
+    return 1 if n < 1 else n * fact(n - 1)
+
 def fact(n):
     if n < 1:
         return 1
-    else:
-        return n * fact(n - 1)
+    return n * fact(n - 1)
 
 # iterative, n < 100000
 def fact(n):
@@ -128,4 +130,25 @@ ORDER BY
 LIMIT 1;
 END;
 $$;
+```
+
+### T-SQL
+MSSQL lacks a factorial function, but it still supports recursion.
+```sql
+-- recursive function, n < 19
+IF OBJECT_ID('dbo.fact', 'FN') IS NOT NULL
+    DROP FUNCTION dbo.fact;
+GO
+
+CREATE FUNCTION dbo.fact (@n numeric)
+RETURNS numeric
+AS
+BEGIN
+    IF @n = 0
+        RETURN 1;
+    RETURN @n * dbo.fact(@n - 1);
+END;
+GO
+
+SELECT dbo.fact(19);
 ```
