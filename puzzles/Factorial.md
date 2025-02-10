@@ -134,7 +134,7 @@ $$;
 
 ### T-SQL
 MSSQL lacks a factorial function, but it still supports recursion.
-```sql
+```tsql
 -- recursive function, n < 19
 IF OBJECT_ID('dbo.fact', 'FN') IS NOT NULL
     DROP FUNCTION dbo.fact;
