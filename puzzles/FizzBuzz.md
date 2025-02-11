@@ -31,6 +31,16 @@ for i in range(1, 101):
         print("Buzz")
     else:
         print(i)
+
+for i in range(1, 101):
+    fb = ''
+    if i % 3 == 0:
+        fb += 'Fizz'
+    if i % 5 == 0:
+        fb += 'Buzz'
+    if not fb:
+        fb = i
+    print(fb)
 ```
 
 ### Bash
