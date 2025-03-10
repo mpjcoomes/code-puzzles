@@ -12,3 +12,4 @@ Certain programming kata are foundational to CS. This repo covers puzzles in Pyt
 -   [Balanced Brackets](puzzles/BalancedBrackets.md)
 -   [99 Bottles of Beer](puzzles/99BottlesOfBeer.md)
 -   [Symbol Tree](puzzles/SymbolTree.md)
+-   [Sum 1 to 100](puzzles/1to100.md)
