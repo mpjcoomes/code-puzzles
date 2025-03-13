@@ -1,7 +1,7 @@
 Code Puzzles
 ==========
 
-Certain programming kata are foundational to CS. This repo covers puzzles in Python, Bash, and SQL.
+Certain programming kata are foundational to Computer Science. This repo covers puzzles in Python, Bash, and SQL.
 
 -   [FizzBuzz](puzzles/FizzBuzz.md)
 -   [Fibonacci Sequence](puzzles/Fibonacci.md)
